@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rasterization Example</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+<canvas id="rasterCanvas" width="400" height="400"></canvas>
+<script>
+  const canvas = document.getElementById('rasterCanvas');
+  const ctx = canvas.getContext('2d');
+
+  //Define vertices of the triangle in 3D space
+  const vertices3D = [
+    { x: 100, y: 300, z: 0 },
+    { x: 300, y: 300, z: 0 },
+    { x: 200, y: 100, z: 0 }
+  ];
+
+  //Define colors for each vertex
+  const colors = [
+    '#ff0000', // Red
+    '#00ff00', // Green
+    '#0000ff'  // Blue
+  ];
+
+  //Perform perspective projection (simple projection for this example)
+  const vertices2D = vertices3D.map(vertex => ({
+    x: vertex.x,
+    y: vertex.y
+  }));
+
+  //Rasterize the triangle
+  ctx.beginPath();
+  ctx.moveTo(vertices2D[0].x, vertices2D[0].y);
+  ctx.lineTo(vertices2D[1].x, vertices2D[1].y);
+  ctx.lineTo(vertices2D[2].x, vertices2D[2].y);
+  ctx.closePath();
+
+  //Fill triangle with colors
+  const gradient = ctx.createLinearGradient(vertices2D[0].x, vertices2D[0].y, vertices2D[2].x, vertices2D[2].y);
+  gradient.addColorStop(0, colors[0]);
+  gradient.addColorStop(0.5, colors[1]);
+  gradient.addColorStop(1, colors[2]);
+  ctx.fillStyle = gradient;
+  ctx.fill();
+</script>
+</body>
+</html>
